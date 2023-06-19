@@ -1,0 +1,55 @@
+.btn {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+    user-select: none;
+    touch-action: manipulation;
+    margin: 20px;
+    margin-top: 50px;
+}
+
+.shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: hsl(0deg 0% 0% / 0.25);
+    will-change: transform;
+    transform: translateY(2px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+}
+
+.edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(to left,
+            #979797 0%,
+            #a7a7a7 8%,
+            #a7a7a7 92%,
+            #979797 100%);
+}
+
+.front {
+    display: block;
+    position: relative;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #9ee7ff;
+    color: #31696d;
+    background: #dddddd;
+    will-change: transform;
+    transform: translateY(-4px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+}
