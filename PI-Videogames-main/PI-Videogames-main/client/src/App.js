@@ -7,7 +7,7 @@ import Nav from './components/Nav';
 import { useLocation } from 'react-router-dom';
 import Detail from './components/Detail';
 import Create from './components/Create/Create';
-
+import About from './components/About';
 function App() {
   
   const location = useLocation();
@@ -25,6 +25,7 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/detail/:id" element={<Detail />} />
       <Route path="/create" element={<Create />} />
+      <Route path="/about" element={<About />} />
 
     </Routes>
     </div>

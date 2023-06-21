@@ -30,15 +30,33 @@ catch(error){
 }
 }
 
+// const getVideogamesDB = async () => {
+//     const videogames = await Videogame.findAll({
+//         include: {
+//             model: Genres,
+//             attributes: ['name'],
+//         }
+        
+        
+//     });
+//     return videogames;
+// }
 const getVideogamesDB = async () => {
     const videogames = await Videogame.findAll({
         include: {
             model: Genres,
             attributes: ['name'],
         }
-         
     });
-    return videogames;
+
+    const videogamesWithSource = videogames.map(videogame => {
+        return {
+            ...videogame.toJSON(),
+            source: 'DB'
+        };
+    });
+
+    return videogamesWithSource;
 }
 
 const getVideogamesByApi = async () => {
@@ -57,8 +75,8 @@ const getVideogamesByApi = async () => {
                 imagen: e.background_image,
                 released: e.released,
                 rating: e.rating,
-                genres: e.genres.map((e) => e.name)
-
+                genres: e.genres.map((e) => e.name),
+                source: 'API'
             }
         }
         )

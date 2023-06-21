@@ -7,6 +7,7 @@ export const GET_GENRES = 'GET_GENRES';
 export const ORDER_CARDS = 'ORDER_CARDS';
 export const FILTER_BY_GENRE = 'FILTER_BY_GENRE';
 export const POST_VIDEOGAME = 'POST_VIDEOGAME';
+export const GET_VIDEOGAME_SOURCE = 'GET_VIDEOGAME_SOURCE';
 export const HANDLE_NUMBER = 'HANDLE_NUMBER';
 
 
@@ -114,5 +115,9 @@ export function handleNumber(num) {
         type: HANDLE_NUMBER,
         payload: num,
     };
+}
+
+export const filterVideogameBySource = (Source) => {
+    return { type:GET_VIDEOGAME_SOURCE , payload:Source}
 }
 

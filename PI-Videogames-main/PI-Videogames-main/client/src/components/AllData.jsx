@@ -4,7 +4,7 @@ import Paginado from "./Paginado";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getVideogames, orderCards, filterByGenre } from "./reducer/actions"
+import { getVideogames, orderCards, filterVideogameBySource } from "./reducer/actions"
 
 const AllData = () => {
     const dispatch = useDispatch();
@@ -56,6 +56,17 @@ const AllData = () => {
         setOrder(`Ordenado ${event.target.value}`)
     }
 
+    
+
+    const handleFilterBySource = (event) => {
+        event.preventDefault();
+        const selectedSource = event.target.value;
+        dispatch(filterVideogameBySource(selectedSource));
+        setCurrentPage(1);
+        console.log(allData)
+
+    }
+
 
 
     return (
@@ -79,7 +90,14 @@ const AllData = () => {
             <option value="asc">Ascendente</option>
             <option value="desc">Descendente</option>
             </select>
+
+            <select onChange={handleFilterBySource}>
+            <option value="BOTH">BOTH</option>
+            <option value="API">API</option>
+            <option value="DB">DB</option>
+            </select>
             <select onChange={handleFilter}>
+            <option value="All">All</option>
             <option value="Action">Action</option>
             <option value="Indie">Indie</option>
             <option value="Adventure">Adventure</option>

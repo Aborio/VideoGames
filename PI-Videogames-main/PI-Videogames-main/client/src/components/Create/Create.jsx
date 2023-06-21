@@ -16,7 +16,7 @@ const Create = () => {
         imagen: "",
         rating: "",
         platforms: [],
-        genresID: []
+        genresID: ""
 
     });
 
@@ -29,13 +29,15 @@ const Create = () => {
             imagen: "",
             rating: "",
             platforms: [],
-            genresID: []
+            genresID: ""
             
         }
         if(!input.name) {
             validationErrors.name = "El nombre es requerido"
 
         }
+
+        
         if(!input.description) {
             validationErrors.description = "La descripción es requerida"
             
@@ -55,6 +57,10 @@ const Create = () => {
         if(isNaN(input.rating) || input.rating < 0 || input.rating > 5) {
             validationErrors.rating =  "El rating debe ser un número entre 0 y 5"
             
+
+        }
+        if(input.genresID.length === 0) {
+            validationErrors.genresID = "Debe seleccionar al menos un género"
 
         }
 
@@ -120,41 +126,104 @@ const Create = () => {
     }
 
     const handleGenres = (event) => {
-        if (input.genresID.includes(event.target.value)) {
-            setInput({
-                ...input,
-                genresID: input.genresID.filter((g) => g !== event.target.value)
-            })
-        } else {
-            setInput({
-                ...input,
-                genresID: [...input.genresID, event.target.value]
-            })
-        }
-    }
+        const genreId = event.target.value;
+        const isChecked = event.target.checked;
+      
+        setInput((prevState) => {
+          let updatedGenresID;
+          if (isChecked) {
+            updatedGenresID = [...prevState.genresID, genreId];
+          } else {
+            updatedGenresID = prevState.genresID.filter((g) => g !== genreId);
+          }
+      
+          return {
+            ...prevState,
+            genresID: updatedGenresID,
+          };
+        });
+      };
 
-    const handleSubmit = (event) => {
+
+
+
+      const handleSubmit = (event) => {
         event.preventDefault();
-        
-        if(validate().name || validate().description || validate().released || validate().imagen || validate().rating) {
-            alert(errors.name || errors.description || errors.released || errors.imagen || errors.rating)
-            alert("Complete los datos correctamente")
-        } else {
-            dispatch(postVideogame(input))
-            alert("Videojuego creado correctamente")
-            setInput({
-                name: "",
-                description: "",
-                released: "",
-                imagen: "",
-                rating: "",
-                platforms: [],
-                genresID: []
-        })
-    }
+        const validationErrors = validate();
+        const hasGenreErrors = validationErrors.genresID !== "";
 
+        if(hasGenreErrors || Object.keys(validationErrors).some((k) => validationErrors[k] !== "")) {
+            setErrors(validationErrors);
         
-    }
+        }
+        if (
+          validationErrors.name ||
+          validationErrors.description ||
+          validationErrors.released ||
+          validationErrors.imagen ||
+          validationErrors.rating  ||
+            validationErrors.genresID
+      
+        ) {
+          alert(
+            validationErrors.name ||
+            validationErrors.description ||
+            validationErrors.released ||
+            validationErrors.imagen ||
+            validationErrors.rating ||
+            validationErrors.genresID
+           
+          );
+        } else {
+          dispatch(postVideogame(input));
+          alert("Videojuego creado correctamente");
+          setInput({
+            name: "",
+            description: "",
+            released: "",
+            imagen: "",
+            rating: "",
+            platforms: [],
+            genresID: [],
+          });
+        }
+      };
+
+
+      const handleCheckboxChange = (event) => {
+        const { name, checked } = event.target;
+
+            let errorMessage = "";
+
+            if (name === "genres" && !checked && input.genresID.length === 1) {
+            errorMessage = "At least one genre must be selected.";
+            }
+
+            setInput((prevGame) => {
+            if (checked) {
+                return {
+                ...prevGame,
+                [name]: [...prevGame[name], event.target.value]
+                };
+            } else {
+                return {
+                ...prevGame,
+                [name]: prevGame[name].filter((value) => value !== event.target.value)
+                };
+            }
+            });
+
+            setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: errorMessage
+            }));
+        };
+
+
+
+
+
+
 
     return (
         <div className="cform">
@@ -238,16 +307,27 @@ const Create = () => {
                     </select>
                     {errors.platforms && <span>{errors.platforms}</span>}
                 </div>
-                <div>
-                    <label>Géneros</label>
-                    
-                    <select onChange={handleGenres}>
-                        <option>Géneros</option>
-                        {genres.map((g) => (
-                            <option key={g.name} value={g.id}>{g.name}</option>
-                        ))}
-                    </select>
-                    {errors.genresID && <span>{errors.genresID}</span>}
+                <div className="label">
+                    <h2>Géneros</h2>
+                 <div className="checkbox"> 
+                {genres.map((g) => (
+                <label key={g.id} className="label">
+                <input
+                type="checkbox"
+                className="checkbox1"
+                id={`genre-${g.id}`}
+                name="genresID"
+                value={g.id}
+                checked={input.genresID.includes(String(g.id))}
+                onChange={handleCheckboxChange}
+                disabled={g.name === 'Géneros'}
+            />
+            <label htmlFor={`genre-${g.id}`}>{g.name}</label>
+            
+        </label>
+        
+    ))}
+                </div>
                 </div>
                 <button className="button" type="submit">Crear videojuego</button>
             </form>

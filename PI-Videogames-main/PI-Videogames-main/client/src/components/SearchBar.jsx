@@ -42,7 +42,7 @@ export default function SearchBar() {
         
         <div className="row">
           <button onClick={handleHideResults}>Cerrar resultados</button>
-          {Object.values(allVideogames).map((game) => (
+          {allVideogames && Object.values(allVideogames).map((game) => (
             <div className="container" key={game.id}>
               <h1>{game.name}</h1>
               <img src={game.imagen} alt="img" width="200px" height="200px" />

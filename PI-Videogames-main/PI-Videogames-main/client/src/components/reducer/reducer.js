@@ -1,10 +1,12 @@
-import { GET_VIDEOGAMES,HANDLE_NUMBER, POST_VIDEOGAME, SEARCH,FILTER_BY_GENRE, GET_GAMESBYID, ORDER_CARDS, GET_GENRES } from "./actions";
+import { GET_VIDEOGAMES,HANDLE_NUMBER, POST_VIDEOGAME, SEARCH,FILTER_BY_GENRE, GET_GAMESBYID, ORDER_CARDS, GET_VIDEOGAME_SOURCE, GET_GENRES } from "./actions";
 
 const initialState = {
     videogames: [],
     allVideogames: [],
-    searchVideogames: [],
+    searchedVideogames: [],
     genres: [],
+    location:'BOTH',
+    sourceVidegoames: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -93,7 +95,37 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 numPage: action.payload,
             };
-
+        
+            case GET_VIDEOGAME_SOURCE:
+                let sourceVideogamesFiltered;
+              
+                if (state.searchedVideogames.length === 0) {
+                  if (action.payload === 'BOTH') {
+                    sourceVideogamesFiltered = state.allVideogames;
+                  } else if (action.payload === 'API') {
+                    sourceVideogamesFiltered = state.allVideogames.filter(videogame => videogame.source === 'API');
+                  } else if (action.payload === 'DB') {
+                    sourceVideogamesFiltered = state.allVideogames.filter(videogame => videogame.source === 'DB');
+                  } else {
+                    sourceVideogamesFiltered = state.allVideogames;
+                  }
+                } else {
+                  if (action.payload === 'BOTH') {
+                    sourceVideogamesFiltered = state.searchedVideogames;
+                  } else if (action.payload === 'API') {
+                    sourceVideogamesFiltered = state.searchedVideogames.filter(videogame => videogame.source === 'API');
+                  } else if (action.payload === 'DB') {
+                    sourceVideogamesFiltered = state.searchedVideogames.filter(videogame => videogame.source === 'DB');
+                  } else {
+                    sourceVideogamesFiltered = state.searchedVideogames;
+                  }
+                }
+              
+                return {
+                  ...state,
+                  location: action.payload,
+                  videogames: sourceVideogamesFiltered
+                };
 
         default:
             return {...state};

@@ -5,8 +5,10 @@ export default function Nav() {
     return (  
         <div className="nav">
             <SearchBar />
-            <NavLink to="/home"><button>Home</button></NavLink>
-            <NavLink to="/create"><button>Create</button></NavLink>
+            <br></br>
+            <NavLink className="nav-link" to="/home">Home</NavLink>
+            <NavLink className="nav-link" to="/create">Create</NavLink>
+            <NavLink  className="nav-link" to="/about">About</NavLink>
         </div>
     )
 }
