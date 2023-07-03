@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const{getVideogameById,getAllVideogames, getVideogameByName, createVideogame} = require('../controllers/videogamesControler.js');
 const {saveGenresToDB, getAllGenres} = require('../controllers/genresController.js');
+const {createGenres} = require('../controllers/genresController.js');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -89,6 +90,22 @@ router.post('/videogames', async (req, res) => {
         res.status(500).json({error: error.message});
     }
 });
+
+
+router.post('/genres', async (req, res) => {
+    const {name} = req.body;
+    try{
+        if(!name){
+            res.status(400).json({error:"datos no crrecto"});
+
+        }
+        const genres = await createGenres(name);
+        res.status(200).json(genres);
+    }
+        catch(error){
+            res.status(500).json({error: error.message});
+        }
+    });
 
 
 

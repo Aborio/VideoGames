@@ -60,10 +60,21 @@ const getAllGenres = async () => {
     }
 };
 
+const createGenres = async (req, res) => {
+    try {
+        const genre = await Genres.create();
+        return res.json(genre);
+    } catch(error) {
+        console.log('Error al crear el género', error);
+    }
+};
+
+
 
 
 module.exports = {
     saveGenresToDB,
     getGenresAPI,
-    getAllGenres
+    getAllGenres,
+    createGenres
 };
